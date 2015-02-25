@@ -368,9 +368,45 @@ public class CourseSiteExporter {
         {            
             Element link = doc.createElement(HTML.Tag.A.toString());
             link.setAttribute(HTML.Attribute.HREF.toString(), getLink(pages.get(i)));
-            link.setTextContent(getLink(pages.get(i)));
-            navBar.appendChild(link);
             
+            if (getLink(pages.get(i)).equals("index.html"))
+            {
+                link.setAttribute(HTML.Attribute.ID.toString(), ID_HOME_LINK);
+                link.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_NAV);
+               
+            }
+            
+            else if (getLink(pages.get(i)).equals("schedule.html"))
+            {
+                link.setAttribute(HTML.Attribute.ID.toString(), ID_SCHEDULE_LINK);
+                link.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_OPEN_NAV);
+                
+            }
+            
+            else if (getLink(pages.get(i)).equals("syllabus.html"))
+            {
+                link.setAttribute(HTML.Attribute.ID.toString(), ID_SYLLABUS_LINK);
+                link.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_NAV);
+                
+            }
+            
+            else if (getLink(pages.get(i)).equals("hws.html"))
+            {
+                link.setAttribute(HTML.Attribute.ID.toString(), ID_HWS_LINK);
+                link.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_NAV);
+                
+            }
+            
+            else if (getLink(pages.get(i)).equals("projects.html"))
+            {
+                link.setAttribute(HTML.Attribute.ID.toString(), ID_PROJECTS_LINK);
+                link.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_NAV);
+                
+            }
+            
+            
+            link.setTextContent(pages.get(i).toString());
+            navBar.appendChild(link);
         }
         
    
