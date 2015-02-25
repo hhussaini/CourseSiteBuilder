@@ -213,7 +213,7 @@ public class CourseSiteExporter {
         
         
         
-        setNavBar(scheduleDoc);
+        setNavBar(scheduleDoc, courseToExport);
 
         // AND RETURN THE FULL PAGE DOM
         return scheduleDoc;
@@ -353,27 +353,28 @@ public class CourseSiteExporter {
         }
     }
     
-    private void setNavBar(Document doc) {
+    private void setNavBar(Document doc, Course courseToExport) {
         
         Node navBar = getNodeWithId(doc, HTML.Tag.DIV.toString(), ID_NAVBAR);
         
-        String home = "Home";
-        String homework = "HWs";
-        String schedule = "Schedule";
-        String syllabus = "Syllabus";
+     
+               
+        List<CoursePage> pages = courseToExport.getPages();
+       // Element link = doc.createElement(HTML.Tag.A.toString());
+        //link.setAttribute(HTML.Attribute.HREF.toString(), getLink(pages.get(1)));
+       // link.setTextContent("asdasd");
+       // navBar.appendChild(link);
+        for (int i = 0; i < pages.size(); i++)
+        {            
+            Element link = doc.createElement(HTML.Tag.A.toString());
+            link.setAttribute(HTML.Attribute.HREF.toString(), getLink(pages.get(i)));
+            link.setTextContent(getLink(pages.get(i)));
+            navBar.appendChild(link);
+            
+        }
         
-        Element home1 = doc.createElement(HTML.Tag.A.toString());
-        Element homework1 = doc.createElement(HTML.Tag.A.toString());
-        Element schedule1 = doc.createElement(HTML.Tag.A.toString());
-        Element syllabus1 = doc.createElement(HTML.Tag.A.toString());
-        
-        Node navBarHomeNode = doc.createTextNode(home);
-        Node navBarHWNode = doc.createTextNode(homework);
-        navBarHomeNode.appendChild(home1);
-        
-      
-        
-        
+   
+       
         
     }
     
