@@ -6,6 +6,7 @@ import csb.data.CoursePage;
 import csb.data.Instructor;
 import csb.data.Semester;
 import csb.data.Subject;
+import csb.gui.CSB_GUI;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -124,6 +125,14 @@ public class JsonCourseFileManager implements CourseFileManager {
         courseToLoad.setNumber(json.getInt(JSON_NUMBER));
         courseToLoad.setTitle(json.getString(JSON_TITLE));
         
+        
+        
+        
+        courseToLoad.setSemester((json.getString(JSON_SEMESTER)));
+        courseToLoad.setYear(json.getInt(JSON_YEAR));
+        
+        
+        
         // GET THE PAGES TO INCLUDE 
         courseToLoad.clearPages();
         JsonArray jsonPagesArray = json.getJsonArray(JSON_PAGES);
@@ -151,8 +160,14 @@ public class JsonCourseFileManager implements CourseFileManager {
         JsonObject endingFriday = json.getJsonObject(JSON_ENDING_FRIDAY);
         year = endingFriday.getInt(JSON_YEAR);
         month = endingFriday.getInt(JSON_MONTH);
-        day = startingMonday.getInt(JSON_DAY);
+        day = endingFriday.getInt(JSON_DAY);
         courseToLoad.setEndingFriday(LocalDate.of(year, month, day));
+        
+        
+        
+        
+        
+        
     }
     
     /**
@@ -293,4 +308,5 @@ public class JsonCourseFileManager implements CourseFileManager {
         JsonObject arrayObject = Json.createObjectBuilder().add(JSON_SUBJECTS, jA).build();
         return arrayObject;
     }
+
 }
