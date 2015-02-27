@@ -11,6 +11,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.text.html.HTML;
 import javax.xml.parsers.DocumentBuilder;
@@ -267,15 +268,15 @@ public class CourseSiteExporter {
             Element row = scheduleDoc.createElement(HTML.Tag.TR.toString());
             // AND ADD DAY OF THE WEEK TABLE HEADERS
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, MONDAY_HEADER);
-            //addDayNumber(scheduleDoc, dowRowHeaderElement, countingDate);
+            
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, TUESDAY_HEADER);
-            //addDayNumber(scheduleDoc, dowRowHeaderElement, countingDate);
+            
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, WEDNESDAY_HEADER);
-            //addDayNumber(scheduleDoc, dowRowHeaderElement, countingDate);
+          
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, THURSDAY_HEADER);
-            //addDayNumber(scheduleDoc, dowRowHeaderElement, countingDate);
+            
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, FRIDAY_HEADER);
-            //addDayNumber(scheduleDoc, dowRowHeaderElement, countingDate);
+            
             addDayOfWeekTable(scheduleDoc, row, countingDate);
             countingDate = countingDate.plusDays(1);
             addDayOfWeekTable(scheduleDoc, row, countingDate);
@@ -287,7 +288,7 @@ public class CourseSiteExporter {
             addDayOfWeekTable(scheduleDoc, row, countingDate);
             countingDate = countingDate.plusDays(1);
             // ADVANCE THE COUNTING DATE BY ONE WEEK
-           // countingDate = countingDate.plusDays(7);
+            countingDate = countingDate.plusDays(2);
             
             // AND PUT IT IN THE TABLE
             Node scheduleTableNode = getNodeWithId(scheduleDoc, HTML.Tag.TABLE.toString(), ID_SCHEDULE);
@@ -378,6 +379,8 @@ public class CourseSiteExporter {
                
         List<CoursePage> pages = courseToExport.getPages();
       
+        Collections.sort(pages);
+        
         for (int i = 0; i < pages.size(); i++)
         {            
             Element link = doc.createElement(HTML.Tag.A.toString());
@@ -427,17 +430,17 @@ public class CourseSiteExporter {
     
     
 
-    private void addDayOfWeekTable(Document scheduleDoc, Element dowRowHeaderElement, LocalDate date) {
+    private void addDayOfWeekTable(Document scheduleDoc, Element rowElement, LocalDate date) {
        Element columnDayNum = scheduleDoc.createElement(HTML.Tag.TD.toString());
        columnDayNum.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_SCH);
        Element strong = scheduleDoc.createElement(HTML.Tag.STRONG.toString());
-       //strong.setAttribute(HTML.Tag.STRONG.toString(), date);
+       
        String month = Integer.toString(date.getMonthValue());
        String day = Integer.toString(date.getDayOfMonth());
         
        strong.setTextContent(month + "/" +day);
        columnDayNum.appendChild(strong);
-       dowRowHeaderElement.appendChild(columnDayNum);
+       rowElement.appendChild(columnDayNum);
        
     }
     
