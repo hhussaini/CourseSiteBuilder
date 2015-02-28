@@ -94,6 +94,9 @@ public class CSB_GUI implements CourseDataView {
     Button saveCourseButton;
     Button exportSiteButton;
     Button exitButton;
+    
+    //Created new button for loading
+    Button loadCourseButton;
 
     // WE'LL ORGANIZE OUR WORKSPACE COMPONENTS USING A BORDER PANE
     BorderPane workspacePane;
@@ -302,7 +305,10 @@ public class CSB_GUI implements CourseDataView {
         schedulePageCheckBox.setSelected(courseToReload.hasCoursePage(CoursePage.SCHEDULE));
         hwsPageCheckBox.setSelected(courseToReload.hasCoursePage(CoursePage.HWS));
         projectsPageCheckBox.setSelected(courseToReload.hasCoursePage(CoursePage.PROJECTS));
-        
+                
+        //Sets values for semester and year combo box
+        semesterComboBox.setValue(courseToReload.getSemester());
+        yearComboBox.setValue(courseToReload.getYear());
         
        
 
@@ -340,6 +346,10 @@ public class CSB_GUI implements CourseDataView {
 
         // NOTE THAT THE NEW, LOAD, AND EXIT BUTTONS
         // ARE NEVER DISABLED SO WE NEVER HAVE TO TOUCH THEM
+        
+        //Activates load course button
+        loadCourseButton.setDisable(saved);
+        
     }
 
     /**
@@ -368,7 +378,7 @@ public class CSB_GUI implements CourseDataView {
         course.selectLectureDay(DayOfWeek.THURSDAY, thursdayCheckBox.isSelected());
         course.selectLectureDay(DayOfWeek.FRIDAY, fridayCheckBox.isSelected());
         
-        
+        //Reads the gui and loads the year and semester
         course.setYear(Integer.parseInt(yearComboBox.getSelectionModel().getSelectedItem().toString()));
         course.setSemester(semesterComboBox.getSelectionModel().getSelectedItem().toString());
         
@@ -387,10 +397,14 @@ public class CSB_GUI implements CourseDataView {
 
         // HERE ARE OUR FILE TOOLBAR BUTTONS, NOTE THAT SOME WILL
         // START AS ENABLED (false), WHILE OTHERS DISABLED (true)
+        //Added load button to the GUI
         newCourseButton = initChildButton(fileToolbarPane, CSB_PropertyType.NEW_COURSE_ICON, CSB_PropertyType.NEW_COURSE_TOOLTIP, false);
+        loadCourseButton = initChildButton(fileToolbarPane, CSB_PropertyType.LOAD_COURSE_ICON, CSB_PropertyType.LOAD_COURSE_TOOLTIP, true);
         saveCourseButton = initChildButton(fileToolbarPane, CSB_PropertyType.SAVE_COURSE_ICON, CSB_PropertyType.SAVE_COURSE_TOOLTIP, true);
         exportSiteButton = initChildButton(fileToolbarPane, CSB_PropertyType.EXPORT_PAGE_ICON, CSB_PropertyType.EXPORT_PAGE_TOOLTIP, true);
         exitButton = initChildButton(fileToolbarPane, CSB_PropertyType.EXIT_ICON, CSB_PropertyType.EXIT_TOOLTIP, false);
+        
+        
     }
 
     // CREATES AND SETS UP ALL THE CONTROLS TO GO IN THE APP WORKSPACE
@@ -474,7 +488,7 @@ public class CSB_GUI implements CourseDataView {
         
         
         
-        
+        //Put semester and year labels. Fills semester and year combo boxes as well 
         semesterLabel = initGridLabel(courseInfoPane, CSB_PropertyType.SEMESTER_LABEL, CLASS_PROMPT_LABEL, 0, 2, 1, 1);
         semesterComboBox = initGridComboBox(courseInfoPane, 1, 2, 1, 1);
         semesterComboBox.getItems().addAll("Fall", "Spring", "Winter", "Summer 1", "Summer 2", "Summer EXT");
@@ -579,6 +593,13 @@ public class CSB_GUI implements CourseDataView {
         saveCourseButton.setOnAction(e -> {
             fileController.handleSaveCourseRequest(this, dataManager.getCourse());
         });
+  
+        //Sets action listener to load button 
+        loadCourseButton.setOnAction(e -> {
+            fileController.handleLoadCourseRequest(this, dataManager.getCourse());
+        });
+        
+  
         exportSiteButton.setOnAction(e -> {
             fileController.handleExportCourseRequest(this);
         });
@@ -591,6 +612,18 @@ public class CSB_GUI implements CourseDataView {
         courseSubjectComboBox.setOnAction(e -> {
             courseController.handleCourseChangeRequest(this);
         });
+        
+        
+        //Added action listeners for semestercombobox and yearcombobox
+        semesterComboBox.setOnAction(e -> {
+            courseController.handleCourseChangeRequest(this);
+        });
+        
+        yearComboBox.setOnAction(e -> {
+            courseController.handleCourseChangeRequest(this);
+        });
+
+        
         indexPageCheckBox.setOnAction(e -> {
             courseController.handleCourseChangeRequest(this);
         });
@@ -693,7 +726,8 @@ public class CSB_GUI implements CourseDataView {
     // LOAD THE COMBO BOX TO HOLD Course SUBJECTS
     private void loadSubjectComboBox(ArrayList<String> subjects) {
         for (String s : subjects) {
-            courseSubjectComboBox.getItems().add(s);
+            //Cuts the quotations off the subjects
+            courseSubjectComboBox.getItems().add(s.substring(1, 4));
         }
     }
 
