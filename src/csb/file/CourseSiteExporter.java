@@ -265,18 +265,16 @@ public class CourseSiteExporter {
             // FIRST FOR EACH WEEK MAKE A TABLE ROW            
             Element dowRowHeaderElement = scheduleDoc.createElement(HTML.Tag.TR.toString());
             
+            //Makes new row to add the column in later
             Element row = scheduleDoc.createElement(HTML.Tag.TR.toString());
             // AND ADD DAY OF THE WEEK TABLE HEADERS
-            addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, MONDAY_HEADER);
-            
-            addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, TUESDAY_HEADER);
-            
-            addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, WEDNESDAY_HEADER);
-          
-            addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, THURSDAY_HEADER);
-            
+            addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, MONDAY_HEADER);            
+            addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, TUESDAY_HEADER);            
+            addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, WEDNESDAY_HEADER);          
+            addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, THURSDAY_HEADER);            
             addDayOfWeekHeader(scheduleDoc, dowRowHeaderElement, FRIDAY_HEADER);
             
+            //Calls the method to put the dates in and adds another day to go to the next day
             addDayOfWeekTable(scheduleDoc, row, countingDate);
             countingDate = countingDate.plusDays(1);
             addDayOfWeekTable(scheduleDoc, row, countingDate);
@@ -288,9 +286,11 @@ public class CourseSiteExporter {
             addDayOfWeekTable(scheduleDoc, row, countingDate);
             countingDate = countingDate.plusDays(1);
             // ADVANCE THE COUNTING DATE BY ONE WEEK
+            //Changed code to add by 2 days instead of one week
             countingDate = countingDate.plusDays(2);
             
             // AND PUT IT IN THE TABLE
+            //Appends the new row we created into the schedule 
             Node scheduleTableNode = getNodeWithId(scheduleDoc, HTML.Tag.TABLE.toString(), ID_SCHEDULE);
             scheduleTableNode.appendChild(dowRowHeaderElement);
             scheduleTableNode.appendChild(row);
@@ -336,7 +336,7 @@ public class CourseSiteExporter {
         String bannerText = courseToExport.getSubject().toString() + " " + courseToExport.getNumber() + " - ";
         String bannerTitle = courseToExport.getTitle();
         
-        
+        //Made new textnode and element for break line and added it to bannerNode
         String semesterAndyear = courseToExport.getSemester() + " " + Integer.toString(courseToExport.getYear());
         Element newLine = doc.createElement(HTML.Tag.BR.toString());
         
@@ -350,9 +350,7 @@ public class CourseSiteExporter {
         bannerNode.appendChild(bannerSemAndYear);        
         bannerNode.appendChild(newLine);       
         bannerNode.appendChild(bannerTitleNode);
-        
-        
-       
+      
     }
     
     // USED FOR GETTING THE PAGE LINKS FOR PAGE LINKS IN THE NAVBAR
@@ -374,9 +372,7 @@ public class CourseSiteExporter {
     private void setNavBar(Document doc, Course courseToExport) {
         
         Node navBar = getNodeWithId(doc, HTML.Tag.DIV.toString(), ID_NAVBAR);
-        
-     
-               
+    //Received list from course class to use to put into navBar     
         List<CoursePage> pages = courseToExport.getPages();
       
         Collections.sort(pages);
@@ -428,8 +424,7 @@ public class CourseSiteExporter {
                       
     }
     
-    
-
+    //Adds the column to the row we created with the dates inside
     private void addDayOfWeekTable(Document scheduleDoc, Element rowElement, LocalDate date) {
        Element columnDayNum = scheduleDoc.createElement(HTML.Tag.TD.toString());
        columnDayNum.setAttribute(HTML.Attribute.CLASS.toString(), CLASS_SCH);
